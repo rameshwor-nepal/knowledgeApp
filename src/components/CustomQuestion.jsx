@@ -51,17 +51,23 @@ const CustomQuestion = () => {
             .then((res) =>{
               // console.log(res.data)
               setCarddata(res.data.results.map((quesitem, index) =>{
-                const answer = quesitem.correct_answer
-                const options = [...quesitem.incorrect_answers, answer]
+                const answer = decodeString(quesitem.correct_answer)
+                const options = [...quesitem.incorrect_answers.map((a) =>decodeString(a)), answer]
                 return{
                 id:`${index} - ${Date.now()}`,
-                question:quesitem.question,
+                question:decodeString(quesitem.question),
                 answer:answer,
                 options: options
                 }
                 
               }))
             })
+          }
+
+          function decodeString(string){
+            const textArea = document.createElement("textarea")
+            textArea.innerHTML= string
+            return textArea.value 
           }
         
   return (
